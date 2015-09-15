@@ -1,0 +1,25 @@
+#!/usr/bin/env zsh
+
+CONF=~/.faves
+
+ini_parser() {
+ eval $(sed -e 's/[[:space:]]*\=[[:space:]]*/=/g' \
+            -e 's/[;#].*$//' \
+            -e 's/[[:space:]]*$//' \
+            -e 's/^[[:space:]]*//' \
+            -e "s/^\(.*\)=\([^\"']*\)$/\1=\"\2\"/" \
+ < $CONF | gsed -n -e "/^\[$1\]/I,/^\s*\[/{/^[^;].*\=.*/p;}")
+}
+
+echo $1
+
+# A sections array that we'll loop through
+SECTIONS="section header"
+for SEC in $SECTIONS; do
+ ini_parser "$1" $SEC
+ echo "$SEC: attr:$attr"
+# echo "$file $usr@$srv:$path/$file"
+done
+
+type
+		       
